@@ -1,0 +1,1 @@
+import{g as r}from"./index.CzGW6FVa.js";import{S as t}from"./ScrollTrigger.DNECHiyU.js";r.registerPlugin(t);if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){const e=document.getElementById("blk-day");e&&r.from("#blk-day .day-step",{opacity:0,scale:1.12,duration:.32,ease:"power4.out",stagger:.06,scrollTrigger:{trigger:e,start:"top 82%",once:!0}})}

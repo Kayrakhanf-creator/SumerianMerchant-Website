@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#b46e3f"/>
+  <rect width="64" height="64" rx="12" fill="url(#g)" opacity="0.5"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c98851"/>
+      <stop offset="1" stop-color="#96582f"/>
+    </linearGradient>
+  </defs>
+  <!-- cuneiform wedge marks -->
+  <g fill="#33200f">
+    <path d="M18 20 L34 24.5 L18 29 Z"/>
+    <path d="M18 20 h22 v2.4 h-22 Z" opacity="0.85"/>
+    <path d="M18 35 L34 39.5 L18 44 Z"/>
+    <path d="M42 20 L46.5 40 L37.5 40 Z"/>
+    <path d="M40 44 h8 v2.4 h-8 Z" opacity="0.85"/>
+  </g>
+</svg>
