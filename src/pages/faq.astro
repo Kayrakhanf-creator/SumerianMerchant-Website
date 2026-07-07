@@ -1,0 +1,76 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import { site } from "../lib/site";
+
+const FAQS: Array<[string, string]> = [
+  [
+    "What is Sumerian Merchant?",
+    "A first-person merchant simulator set in Mesopotamia around 2000 BCE. You run a state-appointed shop: stock shelves, weigh barley payments on a real balance scale, negotiate, take pawns, file official complaints, pay taxes, and rise through society.",
+  ],
+  [
+    "When can I play it?",
+    "A free demo is planned for Steam Next Fest in October 2026 — roughly your first ten days in the city. Wishlist the game on Steam to be notified the moment it's live.",
+  ],
+  [
+    "What platforms?",
+    "PC via Steam first (Windows). Other platforms may follow after 1.0 — nothing to announce yet.",
+  ],
+  ["How much will it cost?", "Not final. We'll announce pricing closer to Early Access."],
+  [
+    "Is it historically accurate?",
+    "Grounded, not academic. Barley as everyday money, weighed silver for large deals, state-regulated prices, clay-tablet complaints, cylinder seals — all real. Then we take deliberate liberties where play demands it. Ea-nāṣir's famous copper complaints date to around 1750 BCE, a few centuries after our setting. We moved him. He'd have moved himself for a good margin.",
+  ],
+  ["Is there combat?", "No. Your weapons are a scale, a stylus, and a reputation."],
+  [
+    "Single-player? Co-op?",
+    "Single-player first. Co-op is something we want to explore after 1.0.",
+  ],
+  [
+    "What about the strange rumors?",
+    "The city keeps records. Some of them shouldn't exist. That's all we'll say.",
+  ],
+  ["What engine is it built in?", "Unity."],
+  [
+    "What languages will it support?",
+    "English at launch, with Turkish and other languages planned for the full release.",
+  ],
+];
+---
+
+<Base title="FAQ" description="Platforms, release plans, historical accuracy, and other questions.">
+  <PageHeader eyebrow="Questions" title="Asked at the counter.">
+    <p slot="lead">If your question isn&rsquo;t here, ask on Discord — the door is open.</p>
+  </PageHeader>
+  <div class="mx-auto max-w-3xl px-6 py-20">
+    <div class="divide-y divide-brick-900">
+      {
+        FAQS.map(([q, a]) => (
+          <details class="group py-2">
+            <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6 rounded-md px-2 py-4 font-display text-lg text-sand-200 transition-colors hover:text-barley-400 [&::-webkit-details-marker]:hidden">
+              {q}
+              <span aria-hidden="true" class="shrink-0 text-copper-500 transition-transform duration-300 group-open:rotate-45">
+                +
+              </span>
+            </summary>
+            <div class="max-w-[60ch] px-2 pb-6 leading-relaxed text-sand-300/80">{a}</div>
+          </details>
+        ))
+      }
+      <details class="group py-2">
+        <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6 rounded-md px-2 py-4 font-display text-lg text-sand-200 transition-colors hover:text-barley-400 [&::-webkit-details-marker]:hidden">
+          I'm press / a creator — where do I start?
+          <span aria-hidden="true" class="shrink-0 text-copper-500 transition-transform duration-300 group-open:rotate-45">+</span>
+        </summary>
+        <div class="max-w-[60ch] px-2 pb-6 leading-relaxed text-sand-300/80">
+          The <a class="text-barley-400 underline underline-offset-4" href="/press">press kit</a> has
+          the factsheet, descriptions, and assets. You&rsquo;re welcome to monetize videos of the game.
+          For keys and questions:
+          <a class="text-barley-400 underline underline-offset-4" href={`mailto:${site.pressEmail}`}>
+            {site.pressEmail}
+          </a>.
+        </div>
+      </details>
+    </div>
+  </div>
+</Base>

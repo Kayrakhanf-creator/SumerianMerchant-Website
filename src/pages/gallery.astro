@@ -1,0 +1,40 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Reveal from "../components/Reveal.astro";
+import MediaPlaceholder from "../components/MediaPlaceholder.astro";
+
+/**
+ * Pre-release: these frames document the exact shots we intend to capture.
+ * Replace each MediaPlaceholder with a real <img> as captures land —
+ * filenames are already reserved in /public/assets.
+ */
+const SHOTS = [
+  ["gallery-01.jpg", "The shop at dawn — first light through the reed awning"],
+  ["gallery-02.jpg", "Weighing barley — stone weights, steady hands"],
+  ["gallery-03.jpg", "The market street — carts, crowds, dust"],
+  ["shop-interior.jpg", "Shelves stocked for a festival day"],
+  ["market-street.jpg", "The Guardian making his evening rounds"],
+  ["mesopotamia-map.jpg", "The known world — for now"],
+] as const;
+---
+
+<Base title="Gallery" description="Screenshots and captures from Sumerian Merchant.">
+  <PageHeader eyebrow="Gallery" title="The city, frame by frame.">
+    <p slot="lead">
+      Captures will replace these frames as we approach the demo. Each frame below is a shot
+      we&rsquo;ve promised ourselves.
+    </p>
+  </PageHeader>
+  <div class="mx-auto max-w-6xl px-6 py-20">
+    <div class="grid gap-6 sm:grid-cols-2">
+      {
+        SHOTS.map(([file, label], i) => (
+          <Reveal delay={(i % 2) * 80}>
+            <MediaPlaceholder file={file} label={label} />
+          </Reveal>
+        ))
+      }
+    </div>
+  </div>
+</Base>

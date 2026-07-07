@@ -1,0 +1,52 @@
+---
+/** CATALOG RAIL — a quiet index of the ten plates, xl screens only. */
+const ITEMS = [
+  ["hero", "01", "Dawn"],
+  ["scale", "02", "The scale"],
+  ["systems", "03", "The routine"],
+  ["society", "04", "The climb"],
+  ["law", "05", "The law"],
+  ["economy", "06", "The market"],
+  ["characters", "07", "The people"],
+  ["artifacts", "08", "The map"],
+  ["mystery", "09", "The records"],
+  ["roadmap", "10", "The road"],
+] as const;
+---
+
+<nav
+  id="cat-rail"
+  aria-label="Page sections"
+  class="cat-rail fixed left-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-3.5 xl:flex"
+>
+  {
+    ITEMS.map(([id, no, label]) => (
+      <a href={`#${id}`} data-rail={id}>
+        <span class="rail-no">{no}</span>
+        <span aria-hidden="true" class="rail-tick" />
+        <span class="rail-label">{label}</span>
+      </a>
+    ))
+  }
+</nav>
+
+<script>
+  const rail = document.getElementById("cat-rail");
+  if (rail) {
+    const links = Array.from(rail.querySelectorAll<HTMLAnchorElement>("a[data-rail]"));
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            for (const l of links) l.classList.toggle("is-live", l.dataset.rail === e.target.id);
+          }
+        }
+      },
+      { rootMargin: "-42% 0px -42% 0px" },
+    );
+    for (const l of links) {
+      const s = document.getElementById(l.dataset.rail ?? "");
+      if (s) obs.observe(s);
+    }
+  }
+</script>

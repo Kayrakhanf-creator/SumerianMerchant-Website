@@ -1,0 +1,16 @@
+---
+/**
+ * Dust-settle reveal wrapper. The IntersectionObserver lives once in
+ * Base.astro; this only renders the hook class. Content stays visible
+ * without JS (CSS gates hiding behind html.js).
+ */
+interface Props {
+  delay?: number;
+  class?: string;
+}
+const { delay = 0, class: cls = "" } = Astro.props;
+---
+
+<div class={`reveal ${cls}`} style={delay ? `transition-delay:${delay}ms` : undefined}>
+  <slot />
+</div>

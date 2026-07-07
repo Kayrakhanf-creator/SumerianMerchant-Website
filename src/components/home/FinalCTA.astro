@@ -1,0 +1,78 @@
+---
+import CTALink from "../CTALink.astro";
+import WishlistButton from "../WishlistButton.astro";
+import Reveal from "../Reveal.astro";
+import Dust from "../Dust.astro";
+import { site } from "../../lib/site";
+
+/**
+ * Final conversion moment. Back at the shop, day done, scale at rest.
+ * Replace the gradient scene with a sunset capture when available.
+ */
+---
+
+<section id="wishlist" class="relative overflow-hidden">
+  <div aria-hidden="true" class="absolute inset-0">
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(to bottom, #12101d 0%, #2c1c22 40%, #58301f 72%, #21150d 100%);"
+    >
+    </div>
+    <div
+      class="absolute inset-0"
+      style="background: radial-gradient(360px 180px at 40% 66%, rgba(214,140,66,0.28), transparent 70%);"
+    >
+    </div>
+    <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 170" preserveAspectRatio="xMidYMax slice">
+      <path
+        fill="#0e0906"
+        d="M0 170 V120 h80 v-16 h64 v16 h72 v-30 h70 v30 h90 v-14 h80 v14 h60
+           h34 v-20 h30 v-18 h32 v-22 h40 v22 h32 v18 h30 v20 h34
+           h90 v-26 h66 v26 h84 v-12 h96 v12 h90 v-22 h96 v72 Z"
+      ></path>
+      <g fill="#d29a36" opacity="0.5">
+        <rect x="212" y="112" width="4" height="6"></rect>
+        <rect x="705" y="96" width="4" height="6"></rect>
+        <rect x="1120" y="118" width="4" height="6"></rect>
+      </g>
+      {/* the scale at rest, level */}
+      <g fill="#0a0603" stroke="#7c5628" stroke-opacity="0.5" stroke-width="1">
+        <rect x="702" y="128" width="5" height="34"></rect>
+        <rect x="676" y="124" width="57" height="4" rx="2"></rect>
+        <path d="M676 128 l-6 12 h16 l-6 -12"></path>
+        <path d="M727 128 l-6 12 h16 l-6 -12"></path>
+        <rect x="688" y="160" width="34" height="5" rx="2"></rect>
+      </g>
+    </svg>
+  </div>
+  <Dust count={16} />
+
+  <div class="relative mx-auto max-w-4xl px-6 py-32 text-center md:py-44">
+    <Reveal>
+      <img
+        src="/assets/logo-sm.png"
+        alt=""
+        class="mx-auto mb-8 h-14 w-auto drop-shadow-[0_10px_18px_rgba(0,0,0,0.6)]"
+        onerror="this.style.display='none'"
+      />
+    </Reveal>
+    <Reveal>
+      <p class="font-display text-3xl leading-[1.2] text-dust [text-wrap:balance] md:text-5xl">
+        Build your shop.<br />
+        Earn their trust.<br />
+        Rise above your station.
+      </p>
+    </Reveal>
+    <Reveal delay={140}>
+      <div class="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <WishlistButton size="lg" />
+        <CTALink href={site.discordUrl} external variant="outline" size="lg">Join Discord</CTALink>
+      </div>
+    </Reveal>
+    <Reveal delay={220}>
+      <p class="mt-8 text-xs uppercase tracking-[0.28em] text-sand-300/45">
+        Demo at Steam Next Fest · October 2026
+      </p>
+    </Reveal>
+  </div>
+</section>

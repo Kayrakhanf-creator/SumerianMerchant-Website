@@ -1,0 +1,31 @@
+---
+/**
+ * Labeled frame for a real capture that doesn't exist yet.
+ * Swap for <img src={`/assets/${file}`} …> when screenshots/video land.
+ * Shot list: /public/assets/README.md
+ */
+interface Props {
+  file: string;
+  label: string;
+  aspect?: string;
+  class?: string;
+}
+const { file, label, aspect = "aspect-[16/9]", class: cls = "" } = Astro.props;
+---
+
+<figure
+  class={`striated relative overflow-hidden rounded-xl border border-brick-700/70 bg-gradient-to-br from-brick-900 via-brick-950 to-[#14100c] ${aspect} ${cls}`}
+>
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_30%,rgba(201,136,81,0.10),transparent_70%)]"
+  >
+  </div>
+  <figcaption class="absolute inset-0 flex flex-col items-center justify-center gap-2 p-6 text-center">
+    <span class="text-sm text-sand-300/90">{label}</span>
+    <code class="rounded bg-black/30 px-2 py-1 font-mono text-[0.7rem] text-sand-300/50">
+      /assets/{file}
+    </code>
+  </figcaption>
+  <div aria-hidden="true" class="absolute bottom-3 right-3 h-6 w-6 rounded-full border border-copper-500/40"></div>
+</figure>

@@ -1,0 +1,79 @@
+---
+import Reveal from "../Reveal.astro";
+
+const MILESTONES = [
+  {
+    name: "Demo",
+    when: "Steam Next Fest · October 2026",
+    what: "Your first ten days in the city — the shop, the scale, the first complaint.",
+    now: true,
+  },
+  {
+    name: "Early Access",
+    when: "Date to be announced",
+    what: "The full trading year: four seasons, rituals, pawn ledgers, the guild.",
+    now: false,
+  },
+  {
+    name: "1.0 Launch",
+    when: "Date to be announced",
+    what: "Production, caravans, complete collections — and the records beneath the city.",
+    now: false,
+  },
+  {
+    name: "Future Regions",
+    when: "Post-launch",
+    what: "The map grows beyond Mesopotamia.",
+    now: false,
+  },
+];
+---
+
+<section id="roadmap" class="relative py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-6">
+    <p class="sec-kicker">
+      <span class="sec-no">10</span>
+      <span aria-hidden="true" class="sec-rule"></span>
+      <span class="sec-label">Where this is going</span>
+    </p>
+    <h2 class="mt-5 max-w-[22ch] font-display text-3xl leading-[1.08] text-sand-200 md:text-5xl">
+      Development timeline
+    </h2>
+
+    <div class="relative mt-14 max-w-2xl">
+      {/* the carved line */}
+      <div
+        aria-hidden="true"
+        class="absolute bottom-4 left-[9px] top-2 w-[3px] rounded-full bg-brick-700 shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)]"
+      >
+      </div>
+      <ol class="space-y-12">
+        {
+          MILESTONES.map((m, i) => (
+            <li class="relative pl-12">
+              <span
+                aria-hidden="true"
+                class={`absolute left-0 top-1.5 block h-[21px] w-[21px] rotate-45 rounded-[4px] border-2 ${
+                  m.now ? "border-barley-500 bg-barley-500/25" : "border-brick-700 bg-brick-900"
+                }`}
+              />
+              <Reveal delay={i * 60}>
+                <p class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                  <span class="font-display text-2xl text-sand-200">{m.name}</span>
+                  <span
+                    class={`text-xs uppercase tracking-[0.22em] ${
+                      m.now ? "text-barley-400" : "text-sand-300/45"
+                    }`}
+                  >
+                    {m.when}
+                  </span>
+                </p>
+                <p class="mt-2 max-w-[52ch] leading-relaxed text-sand-300/70">{m.what}</p>
+              </Reveal>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

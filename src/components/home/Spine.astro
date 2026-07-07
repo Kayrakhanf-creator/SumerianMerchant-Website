@@ -1,0 +1,198 @@
+---
+import SectionHead from "../SectionHead.astro";
+
+/**
+ * THE SPINE — the merchant's routine as four compact blocks along a
+ * carved line (Kayra's sketch: SM emblem on top, boxes left/right).
+ * The five showcase moments live OUTSIDE the spine as full scenes.
+ */
+const STEPS = [
+  "Open shop", "Order goods", "Stock shelves", "Bargain",
+  "Weigh barley", "Handle complaints", "Pay tax", "Close the day",
+];
+
+const UNLOCKS = [
+  ["Better customers", "New faces trust the counter"],
+  ["Rarer goods", "Shelf space earns its keep"],
+  ["Special orders", "Sealed requests, named buyers"],
+  ["New districts", "Doors open past the market"],
+  ["Higher society", "The city looks at you differently"],
+] as const;
+
+const BEADS: Array<[number, number]> = [
+  [86, 96], [104, 84], [124, 79], [146, 82], [166, 90], [186, 97], [206, 99], [224, 96],
+];
+---
+
+<section id="systems" class="relative py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="text-center">
+      <img
+        src="/assets/logo-sm.png"
+        alt="Sumerian Merchant emblem"
+        class="mx-auto h-16 w-auto drop-shadow-[0_10px_18px_rgba(0,0,0,0.6)]"
+        onerror="this.style.display='none';var f=document.getElementById('logo-fallback');if(f)f.style.display='inline-block'"
+      />
+      <span id="logo-fallback" style="display:none" aria-hidden="true" class="font-display text-3xl font-semibold tracking-[0.2em] text-barley-500">SM</span>
+      <div class="mt-6">
+        <SectionHead no="03" label="The work of a merchant" title="One counter. A whole life." align="center" />
+      </div>
+    </div>
+
+    <div class="relative mt-12">
+      <div
+        aria-hidden="true"
+        class="absolute bottom-6 top-0 w-[3px] rounded-full bg-brick-700 shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)] max-md:left-[5px] md:left-1/2 md:-translate-x-1/2"
+      >
+      </div>
+
+      <div class="flex flex-col gap-12 max-md:pl-9 md:gap-0">
+        {/* 1 · THE DAILY LOOP */}
+        <article id="blk-day" class="spine-block md:w-[calc(50%-2.75rem)] md:self-start">
+          <span aria-hidden="true" class="spine-dot dot-r"></span>
+          <p class="sec-kicker"><span class="sec-no-sm">03 · 1</span><span aria-hidden="true" class="sec-rule"></span><span class="sec-label">The daily loop</span></p>
+          <h3 class="mt-2 font-display text-2xl text-sand-200 md:text-3xl">
+            Every morning begins the same.
+          </h3>
+          <div class="tablet striated mt-5 px-5 py-6">
+            <ol class="grid grid-cols-2 gap-x-4 gap-y-3.5">
+              {
+                STEPS.map((step, i) => (
+                  <li class="day-step flex items-center gap-2.5">
+                    <svg aria-hidden="true" viewBox="0 0 40 10" class="h-2 w-8 shrink-0 fill-[#4a2c15]/80">
+                      {Array.from({ length: Math.min(i + 1, 4) }).map((_, k) => (
+                        <path d={`M${k * 9 + 1} 1 L${k * 9 + 7} 5 L${k * 9 + 1} 9 Z`} />
+                      ))}
+                    </svg>
+                    <span class="impressed font-display text-sm font-semibold text-[#33200f]">{step}</span>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+          <p class="mt-3 text-xs text-sand-300/45">Then a new day begins — and the city remembers yesterday.</p>
+        </article>
+
+        {/* 2 · INFLUENCE */}
+        <article id="blk-influence" class="spine-block md:-mt-24 md:w-[calc(50%-2.75rem)] md:self-end">
+          <span aria-hidden="true" class="spine-dot dot-l"></span>
+          <p class="sec-kicker"><span class="sec-no-sm">03 · 2</span><span aria-hidden="true" class="sec-rule"></span><span class="sec-label">Progression</span></p>
+          <h3 class="mt-2 font-display text-2xl text-sand-200 md:text-3xl">Influence is progression.</h3>
+          <p class="mt-3 max-w-[46ch] leading-relaxed text-sand-300/85">
+            Money keeps the shop open. Influence opens the city.
+          </p>
+          <div class="wax mt-5 px-5 py-5">
+            <p class="mb-4 flex items-center justify-between text-[0.62rem] uppercase tracking-[0.3em] text-sand-300/50">
+              <span>Ledger of influence</span>
+              <span aria-hidden="true">𒀭</span>
+            </p>
+            <ul class="divide-y divide-white/5">
+              {
+                UNLOCKS.map(([name, note]) => (
+                  <li class="flex items-baseline gap-3 py-2.5">
+                    <svg aria-hidden="true" viewBox="0 0 12 12" class="h-2.5 w-2.5 shrink-0 fill-copper-400">
+                      <path d="M1 6 L11 2 L11 10 Z" />
+                    </svg>
+                    <span class="font-display text-base text-sand-200">{name}</span>
+                    <span class="ml-auto hidden text-xs text-sand-300/50 sm:inline">{note}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </article>
+
+        {/* 3 · BUYING & INSPECTION */}
+        <article id="blk-inspect" class="spine-block md:mt-2 md:w-[calc(50%-2.75rem)] md:self-start">
+          <span aria-hidden="true" class="spine-dot dot-r"></span>
+          <p class="sec-kicker"><span class="sec-no-sm">03 · 3</span><span aria-hidden="true" class="sec-rule"></span><span class="sec-label">Buying &amp; inspection</span></p>
+          <h3 class="mt-2 font-display text-2xl text-sand-200 md:text-3xl">
+            Turn it over in your hands.
+          </h3>
+          <p class="mt-3 max-w-[46ch] leading-relaxed text-sand-300/85">
+            People bring you things — copper, seals, statues, a dead man&rsquo;s tools. Weigh the
+            piece. Read the surface. Name your price and defend it.
+          </p>
+          <div class="relative mt-5 overflow-hidden rounded-2xl border border-brick-700/60 bg-[#0f0a07] p-6">
+            <div
+              aria-hidden="true"
+              class="pointer-events-none absolute inset-0"
+              style="background: radial-gradient(55% 60% at 42% 45%, rgba(224,171,78,0.15), transparent 70%);"
+            >
+            </div>
+            <svg viewBox="0 0 300 120" role="img" aria-label="A copper ingot under a merchant's inspection lens" class="mx-auto h-32 w-full max-w-[300px]">
+              <path d="M62 58 q56 20 112 0 l-11 46 q-45 -14 -90 0 Z" fill="#b8703d" stroke="#6d3a1d" stroke-width="3"></path>
+              <path d="M68 62 q50 16 100 0 l-3 11 q-47 -14 -94 0 Z" fill="#c97f52" opacity="0.75"></path>
+              <path d="M96 92 l8 -20" stroke="#6d3a1d" stroke-width="2.5" opacity="0.6"></path>
+              {/* the lens */}
+              <circle cx="196" cy="62" r="30" fill="rgba(233,219,188,0.07)" stroke="#966d36" stroke-width="4"></circle>
+              <line x1="218" y1="84" x2="248" y2="112" stroke="#5c3f1e" stroke-width="7" stroke-linecap="round"></line>
+              <path d="M180 52 q10 -8 24 -4" stroke="rgba(233,219,188,0.35)" stroke-width="2" fill="none" stroke-linecap="round"></path>
+            </svg>
+            <p class="relative mt-2 text-center text-xs text-sand-300/50">
+              Early on, the truth is plain. Later, fakes learn to hide.
+            </p>
+          </div>
+        </article>
+
+        {/* 4 · PAWN & COLLATERAL */}
+        <article id="blk-pawn" class="spine-block md:-mt-28 md:w-[calc(50%-2.75rem)] md:self-end">
+          <span aria-hidden="true" class="spine-dot dot-l"></span>
+          <p class="sec-kicker"><span class="sec-no-sm">03 · 4</span><span aria-hidden="true" class="sec-rule"></span><span class="sec-label">Pawn &amp; collateral</span></p>
+          <h3 class="mt-2 font-display text-2xl text-sand-200 md:text-3xl">
+            Some customers do not come to buy.
+          </h3>
+          <p class="mt-3 max-w-[46ch] leading-relaxed text-sand-300/85">
+            They come to survive. Accept collateral, set terms, wait. If they return, it&rsquo;s
+            theirs. If they don&rsquo;t, it&rsquo;s yours.
+          </p>
+          <div class="relative mt-5 overflow-hidden rounded-2xl border border-brick-700/60 bg-[#0f0a07] p-6">
+            <div
+              aria-hidden="true"
+              class="pointer-events-none absolute inset-0"
+              style="background: radial-gradient(60% 55% at 50% 32%, rgba(224,171,78,0.16), transparent 70%);"
+            >
+            </div>
+            <svg viewBox="30 60 240 80" role="img" aria-label="A lapis necklace left as collateral" class="mx-auto h-24 w-full max-w-[280px]">
+              <path d="M70 108 q40 -46 80 -22 q46 26 80 6" fill="none" stroke="#8f7f5f" stroke-width="3" stroke-linecap="round"></path>
+              {
+                BEADS.map(([cx, cy], i) => (
+                  <circle cx={cx} cy={cy} r={i % 3 === 1 ? 7 : 5.5} fill={i % 2 ? "#354f8c" : "#4a66a6"} stroke="#141311" stroke-width="1" />
+                ))
+              }
+              <path d="M146 82 l10 14 -10 14 -10 -14 Z" fill="#4a66a6" stroke="#141311" stroke-width="1"></path>
+            </svg>
+            <div class="relative mt-4 flex items-center gap-2 border-t border-white/5 pt-4" aria-label="Two of six days remaining">
+              <span class="text-[0.62rem] uppercase tracking-[0.25em] text-sand-300/50">Redemption</span>
+              {
+                Array.from({ length: 6 }).map((_, i) => (
+                  <span aria-hidden="true" class={`h-2 w-6 rounded-sm ${i < 2 ? "bg-barley-500" : "bg-brick-800"}`} />
+                ))
+              }
+              <span class="ml-1 text-xs text-sand-300/60">Day 2 of 6</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const el = document.getElementById("blk-day");
+    if (el)
+      gsap.from("#blk-day .day-step", {
+        opacity: 0,
+        scale: 1.12,
+        duration: 0.32,
+        ease: "power4.out",
+        stagger: 0.06,
+        scrollTrigger: { trigger: el, start: "top 82%", once: true },
+      });
+  }
+</script>

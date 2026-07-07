@@ -1,0 +1,97 @@
+---
+import SectionHead from "../SectionHead.astro";
+
+/**
+ * REGIONAL COLLECTIONS — a special "map room" band. Each region of the
+ * known (and less known) world holds a collection. Mesopotamia is open;
+ * the others are sealed until your influence reaches them. Complete a
+ * region and its people find their way to your counter.
+ */
+
+type Region = { id: string; name: string; state: "open" | "sealed"; line: string };
+
+const REGIONS: Region[] = [
+  {
+    id: "mesopotamia",
+    name: "Mesopotamia",
+    state: "open",
+    line: "Home. The river plain that invented the receipt.",
+  },
+  {
+    id: "anatolia",
+    name: "Anatolia",
+    state: "sealed",
+    line: "Beyond the northern mountains. The caravans speak of a metal harder than bronze.",
+  },
+  {
+    id: "egypt",
+    name: "Egypt",
+    state: "sealed",
+    line: "A river kingdom to the west. Their records refuse to line up with ours.",
+  },
+  {
+    id: "dilmun",
+    name: "Dilmun",
+    state: "sealed",
+    line: "The blessed island down the gulf — pearls, copper, and sailors' oaths.",
+  },
+];
+---
+
+<section id="artifacts" class="relative overflow-hidden bg-[#0d0a08] py-24 md:py-36">
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 opacity-[0.35]"
+    style="background-image: radial-gradient(rgba(233,219,188,0.06) 1px, transparent 1.5px); background-size: 44px 44px;"
+  >
+  </div>
+
+  <div class="relative mx-auto max-w-6xl px-6">
+    <SectionHead no="08" label="Regional collections" title="Collect history." />
+    <p class="mt-6 max-w-[54ch] text-lg leading-relaxed text-sand-300/90">
+      Some goods are more than merchandise. Some carry the memory of a civilization — and the map
+      is bigger than your street.
+    </p>
+
+    <div class="plate relative mt-14 px-5 pb-4 pt-10 md:px-8">
+      <div aria-hidden="true" class="absolute left-5 right-5 top-[62px] border-t-2 border-dashed border-brick-700/80 md:left-8 md:right-8"></div>
+      <div aria-label="Regions" class="relative grid grid-cols-2 gap-y-6 md:grid-cols-4">
+        {
+          REGIONS.map((r) => (
+            <div tabindex="0" class="group flex flex-col items-center gap-3 px-2 text-center outline-offset-4">
+              <span
+                aria-hidden="true"
+                class={`region-node flex h-11 w-11 items-center justify-center rounded-full border-2 bg-[#0d0a08] transition-colors duration-300 ${
+                  r.state === "open" ? "border-barley-500" : "border-brick-700"
+                }`}
+              >
+                {r.state === "open" ? (
+                  <svg viewBox="0 0 14 14" class="h-3.5 w-3.5 fill-barley-500">
+                    <path d="M1 7 L13 2 L13 12 Z" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 14 14" class="h-3.5 w-3.5 fill-none stroke-sand-300/40" stroke-width="1.5">
+                    <rect x="2.5" y="6" width="9" height="6.5" rx="1.5" />
+                    <path d="M4.5 6 V4.5 a2.5 2.5 0 0 1 5 0 V6" />
+                  </svg>
+                )}
+              </span>
+              <span class="region-name font-display text-sm text-sand-300/60 transition-colors duration-300 md:text-base">
+                {r.name}
+              </span>
+              <span class={`text-[0.6rem] uppercase tracking-[0.25em] ${r.state === "open" ? "text-barley-500/80" : "text-sand-300/30"}`}>
+                {r.state === "open" ? "Collection open" : "Sealed"}
+              </span>
+              <span class="mt-1 max-w-[190px] text-xs leading-snug text-sand-300/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 md:min-h-[3rem]">
+                {r.line}
+              </span>
+            </div>
+          ))
+        }
+      </div>
+      <p class="plate-cap">Plate VIII · The known world — three seals yet unbroken</p>
+    </div>
+
+  </div>
+</section>
+

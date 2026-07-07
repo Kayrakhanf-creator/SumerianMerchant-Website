@@ -1,0 +1,21 @@
+{
+  "name": "sumerian-merchant-astro",
+  "type": "module",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev --port 3124",
+    "build": "astro build",
+    "preview": "astro preview --port 3124"
+  },
+  "dependencies": {
+    "astro": "^5.1.10",
+    "gsap": "^3.12.7"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  }
+}

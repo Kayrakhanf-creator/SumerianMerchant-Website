@@ -1,0 +1,61 @@
+---
+import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../lib/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description = site.description } = Astro.props;
+const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.tagline}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#171210" />
+    <meta property="og:title" content={site.name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    {/* TODO: add /assets/og-cover.jpg (1200×630) then:
+        <meta property="og:image" content="/assets/og-cover.jpg" /> */}
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <script is:inline>document.documentElement.classList.add("js");</script>
+  </head>
+  <body class="grain min-h-screen">
+    <Nav />
+    <main><slot /></main>
+    <Footer />
+
+    <script>
+      // Dust-settle reveals — one observer for the whole page.
+      // Fires early (expanded bottom margin, tiny threshold) so the settle
+      // finishes while the element is still in view. Without JS the CSS
+      // never hides .reveal, so content is always visible.
+      const els = document.querySelectorAll<HTMLElement>(".reveal");
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        els.forEach((el) => el.classList.add("is-shown"));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add("is-shown");
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.05, rootMargin: "0px 0px 12% 0px" },
+        );
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

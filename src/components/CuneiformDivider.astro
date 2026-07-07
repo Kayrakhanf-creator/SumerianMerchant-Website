@@ -1,0 +1,12 @@
+---
+import Cuneiform from "./Cuneiform.astro";
+
+interface Props {
+  class?: string;
+}
+const { class: cls = "" } = Astro.props;
+---
+
+<div aria-hidden="true" class={`flex justify-center py-2 ${cls}`}>
+  <Cuneiform marks={5} class="h-2.5 text-brick-700" />
+</div>

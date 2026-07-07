@@ -1,0 +1,160 @@
+---
+import SectionHead from "../SectionHead.astro";
+
+/**
+ * CHARACTERS — on the homepage, as a swipeable strip (scroll-snap).
+ * The seven classes in climbing order, and at the end of the row:
+ * Ea-nāṣir, featured. Portraits are silhouette shadows until renders
+ * land (drop npc-<id>.png into /public/assets and swap per card).
+ */
+const ACC: Record<string, string> = {
+  peasant: `<ellipse cx="98" cy="176" rx="34" ry="44" fill="#0b0704"/><path d="M92 136 q8 -14 20 -6" stroke="#0b0704" stroke-width="8" fill="none" stroke-linecap="round"/>`,
+  farmer: `<g stroke="#0a0603" stroke-width="5" stroke-linecap="round" fill="none"><path d="M112 280 V180"/><path d="M112 196 l-16 -16 M112 196 l16 -16 M112 218 l-18 -14 M112 218 l18 -14 M112 240 l-18 -12 M112 240 l18 -12"/></g>`,
+  craftsman: `<rect x="94" y="212" width="14" height="66" rx="4" fill="#0a0603"/><rect x="74" y="196" width="54" height="24" rx="6" fill="#0a0603"/>`,
+  merchant: `<g fill="#0a0603"><rect x="86" y="196" width="58" height="5" rx="2"/><rect x="112" y="180" width="6" height="20" rx="2"/><path d="M86 201 l-8 16 h20 Z"/><path d="M138 201 l-8 16 h20 Z"/></g>`,
+  priest: `<path d="M150 34 q26 8 22 44 l-44 0 q-4 -36 22 -44 Z" fill="#0d0805"/><path d="M128 78 h44 v8 h-44 Z" fill="#0a0603"/>`,
+  noble: `<path d="M76 330 q10 -8 148 0 l0 14 -148 0 Z" fill="#0b0704"/><path d="M84 300 q66 -14 132 0 l0 10 q-66 -12 -132 0 Z" fill="#0d0805"/>`,
+  royal: `<path d="M120 52 h60 l-6 -22 -12 12 -12 -18 -12 18 -12 -12 Z" fill="#0d0805" stroke="#8a6a2d" stroke-width="1.5"/><rect x="206" y="120" width="6" height="180" rx="3" fill="#0a0603"/><circle cx="209" cy="112" r="10" fill="#0d0805" stroke="#8a6a2d" stroke-width="1.5"/>`,
+  "ea-nasir": `<path d="M118 268 l50 0 8 13 -64 0 Z" fill="#b8703d" stroke="#6d3a1d" stroke-width="2"/><path d="M118 268 l50 0 3 5 -55 0 Z" fill="#c97f52" opacity="0.8"/>`,
+};
+
+type Char = { id: string; name: string; epithet: string; tier: number; line: string; featured?: boolean };
+
+const CHARS: Char[] = [
+  { id: "peasant", name: "Peasant", epithet: "Survival trades", tier: 1, line: "Haggles from need, not greed. Small trades, long memories." },
+  { id: "farmer", name: "Farmer", epithet: "The harvest's clock", tier: 2, line: "Arrives with the harvest, leaves with tools. The seasons are their clock." },
+  { id: "craftsman", name: "Craftsman", epithet: "Knows what things cost", tier: 3, line: "Knows exactly what materials cost — they turn them into everything else." },
+  { id: "merchant", name: "Merchant", epithet: "Risk and opportunity", tier: 4, line: "Presses your margin for sport. Every bargain is a test." },
+  { id: "priest", name: "Priest", epithet: "The temple's purse", tier: 5, line: "Buys for the temple, pays with influence. Favor opens doors barley cannot." },
+  { id: "noble", name: "Noble", epithet: "Quality, or nothing", tier: 6, line: "Never argues the price. Only the quality. Disappoint them once." },
+  { id: "royal", name: "Royal Family", epithet: "Your place in history", tier: 7, line: "They do not come to you. Until, one day, they do." },
+  { id: "ea-nasir", name: "Ea-nāṣir", epithet: "Friend. Mentor. Problem.", tier: 0, line: "He gives you your first copper. Look at it closely. He is real — his complaints survive on clay.", featured: true },
+];
+---
+
+<section id="characters" class="relative bg-brick-950 py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <SectionHead no="07" label="The people of the city" title="Characters." />
+        <p class="mt-5 max-w-[46ch] leading-relaxed text-sand-300/85">
+          Every face at the counter wants something. Swipe through the seven classes — and the man
+          waiting at the end of the row.
+        </p>
+      </div>
+      <div class="flex gap-2">
+        <button
+          type="button"
+          id="char-prev"
+          aria-label="Scroll characters left"
+          class="flex h-11 w-11 items-center justify-center rounded-full border border-brick-700 text-sand-300 transition-colors hover:border-barley-500/60 hover:text-barley-400"
+        >
+          <svg viewBox="0 0 10 16" class="h-3.5 w-2.5 fill-none stroke-current" stroke-width="2" stroke-linecap="round"><path d="M8 1 L2 8 L8 15"></path></svg>
+        </button>
+        <button
+          type="button"
+          id="char-next"
+          aria-label="Scroll characters right"
+          class="flex h-11 w-11 items-center justify-center rounded-full border border-brick-700 text-sand-300 transition-colors hover:border-barley-500/60 hover:text-barley-400"
+        >
+          <svg viewBox="0 0 10 16" class="h-3.5 w-2.5 fill-none stroke-current" stroke-width="2" stroke-linecap="round"><path d="M2 1 L8 8 L2 15"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-7xl">
+    <ul
+      id="char-strip"
+      class="char-strip mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-6 pb-4 md:px-10"
+      aria-label="Characters — scroll horizontally"
+    >
+      {
+        CHARS.map((c, ci) => (
+          <li
+            class={`char-card snap-start shrink-0 w-[262px] rounded-md border px-5 pb-6 pt-5 md:w-[292px] ${
+              c.featured
+                ? "border-barley-600/70 bg-gradient-to-b from-[#241810] to-[#140d08]"
+                : "border-brick-700/60 bg-gradient-to-b from-[#1c1410] to-[#0f0a07]"
+            }`}
+          >
+            <p class="mb-2.5 flex items-center justify-between border-b border-white/5 pb-2.5 text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-sand-300/40">
+              <span>{c.featured ? "The infamous" : "Class " + ["I", "II", "III", "IV", "V", "VI", "VII"][c.tier - 1]}</span>
+              <span class="text-copper-500/70">{"SM·0" + (ci + 1)}</span>
+            </p>
+            <div class="relative">
+              <div
+                aria-hidden="true"
+                class="pointer-events-none absolute inset-0"
+                style="background: radial-gradient(70% 55% at 50% 24%, rgba(224,171,78,0.13), transparent 70%);"
+              />
+              <svg viewBox="40 20 220 350" role="img" aria-label={`${c.name} — character shadow, render pending`} class="mx-auto h-52 w-auto">
+                <defs>
+                  <linearGradient id={`crim-${c.id}`} x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0.6" stop-color="#100a06" />
+                    <stop offset="1" stop-color="#5c4322" />
+                  </linearGradient>
+                </defs>
+                <ellipse cx="150" cy="352" rx="86" ry="11" fill="#000" opacity="0.45" />
+                <ellipse cx="150" cy="96" rx="30" ry="34" fill={`url(#crim-${c.id})`} />
+                <path d="M130 114 q20 22 40 0 l-5 22 q-15 10 -30 0 Z" fill="#0c0805" />
+                <path d="M78 352 q6 -132 46 -164 q12 14 26 14 q14 0 26 -14 q40 32 46 164 Z" fill={`url(#crim-${c.id})`} />
+                <path d="M150 210 V352" stroke="#0b0603" stroke-width="5" opacity="0.6" />
+                <g set:html={ACC[c.id] ?? ""} />
+              </svg>
+            </div>
+            <p class="mt-4 font-display text-xl text-sand-200">{c.name}</p>
+            <p class={`mt-0.5 text-sm ${c.featured ? "font-display text-barley-400" : "text-sand-300/55"}`}>
+              {c.epithet}
+            </p>
+            {c.tier > 0 ? (
+              <svg viewBox="0 0 84 10" class="mt-2.5 h-2.5 w-24" aria-label={`Influence tier ${c.tier} of 7`}>
+                {Array.from({ length: 7 }).map((_, k) => (
+                  <path
+                    d={`M${k * 12 + 1} 1 L${k * 12 + 9} 5 L${k * 12 + 1} 9 Z`}
+                    class={k < c.tier ? "fill-barley-500" : "fill-brick-700"}
+                  />
+                ))}
+              </svg>
+            ) : null}
+            <p class="mt-3 text-sm leading-relaxed text-sand-300/70">{c.line}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-2 px-6 text-xs text-sand-300/40 md:px-10">
+      Drag, swipe, or use the arrows — ← → keys work too. Renders pending; shadows for now.
+    </p>
+  </div>
+</section>
+
+<style>
+  .char-strip {
+    scrollbar-width: none;
+  }
+  .char-strip::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+<script>
+  const strip = document.getElementById("char-strip");
+  const step = () => {
+    const card = strip?.querySelector<HTMLElement>(".char-card");
+    return card ? card.offsetWidth + 20 : 300;
+  };
+  document.getElementById("char-prev")?.addEventListener("click", () => strip?.scrollBy({ left: -step(), behavior: "smooth" }));
+  document.getElementById("char-next")?.addEventListener("click", () => strip?.scrollBy({ left: step(), behavior: "smooth" }));
+
+  let inView = false;
+  if (strip) {
+    new IntersectionObserver(([e]) => (inView = !!e?.isIntersecting), { threshold: 0.2 }).observe(strip);
+    document.addEventListener("keydown", (e) => {
+      if (!inView) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
+      if (e.key === "ArrowRight") strip.scrollBy({ left: step(), behavior: "smooth" });
+      if (e.key === "ArrowLeft") strip.scrollBy({ left: -step(), behavior: "smooth" });
+    });
+  }
+</script>

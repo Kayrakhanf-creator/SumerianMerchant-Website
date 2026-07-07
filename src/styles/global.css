@@ -1,0 +1,517 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..640&family=Inter:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   SUMERIAN MERCHANT — global design system (Astro edition)
+   Materials: clay, wax, bronze, barley, bitumen.
+   Motion: heavy, dusty, deliberate — but SHORT, so nothing
+   finishes off-screen. Zero JS is the default.
+   ============================================================ */
+
+:root {
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-stamp: cubic-bezier(0.65, 0, 0.35, 1);
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  @apply bg-bitumen font-body text-dust antialiased;
+  background-image: radial-gradient(
+    1100px 520px at 72% -8%,
+    rgba(201, 136, 81, 0.07),
+    transparent 62%
+  );
+}
+
+::selection {
+  background: theme("colors.barley.500");
+  color: theme("colors.bitumen");
+}
+
+:focus-visible {
+  outline: 2px solid theme("colors.barley.400");
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- typography helpers ---------- */
+
+.eyebrow {
+  @apply text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-barley-500;
+}
+
+.impressed {
+  text-shadow: 0 1px 0 rgba(255, 240, 216, 0.35);
+}
+
+/* ---------- surfaces & materials ---------- */
+
+.grain {
+  position: relative;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+.tablet {
+  border-radius: 1.1rem 1.4rem 1rem 1.3rem;
+  background: linear-gradient(155deg, #c98851, #b46e3f 48%, #96582f);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 236, 210, 0.28),
+    inset 0 -4px 10px rgba(43, 22, 8, 0.45),
+    inset 2px 0 6px rgba(43, 22, 8, 0.18),
+    0 24px 48px -24px rgba(0, 0, 0, 0.8);
+  color: #33200f;
+}
+.tablet-dark {
+  border-radius: 1.1rem 1.4rem 1rem 1.3rem;
+  background: linear-gradient(155deg, #46311f, #36261a 55%, #291d15);
+  box-shadow:
+    inset 0 1px 0 rgba(233, 219, 188, 0.09),
+    inset 0 -4px 10px rgba(0, 0, 0, 0.5),
+    0 24px 48px -24px rgba(0, 0, 0, 0.8);
+}
+
+.wax {
+  border-radius: 0.6rem;
+  border: 6px solid #3a2a1a;
+  background: linear-gradient(160deg, #241a12, #1b130d);
+  box-shadow:
+    inset 0 0 0 1px rgba(220, 180, 120, 0.08),
+    inset 0 10px 30px rgba(0, 0, 0, 0.5),
+    0 20px 40px -24px rgba(0, 0, 0, 0.8);
+}
+
+/* striations as an overlay so they never erase the clay gradient beneath */
+.striated {
+  position: relative;
+}
+.striated::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 5px,
+    rgba(43, 22, 8, 0.05) 5px,
+    rgba(43, 22, 8, 0.05) 6px
+  );
+}
+
+/* ---------- stamp / seal ---------- */
+
+.stamp {
+  display: inline-block;
+  padding: 0.28em 0.65em;
+  border: 3px solid currentColor;
+  border-radius: 0.35em;
+  transform: rotate(-4deg);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.92;
+  font-size: 0.85em;
+}
+
+/* ---------- reveal (fast dust-settle; hidden ONLY when JS is present) ---------- */
+
+.reveal {
+  transition:
+    opacity 0.55s var(--ease-settle),
+    transform 0.55s var(--ease-settle);
+}
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  will-change: opacity, transform;
+}
+html.js .reveal.is-shown {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------- sticky nav solid state ---------- */
+
+.nav-solid {
+  border-color: rgba(70, 49, 31, 0.8) !important;
+  background: rgba(23, 18, 16, 0.9) !important;
+  backdrop-filter: blur(12px);
+}
+
+/* ---------- dust particles (build-time spans, zero client JS) ---------- */
+
+@keyframes dust-drift {
+  0% {
+    transform: translate3d(0, 12px, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--dust-o, 0.5);
+  }
+  88% {
+    opacity: var(--dust-o, 0.5);
+  }
+  100% {
+    transform: translate3d(var(--dust-x, 30px), var(--dust-y, -90px), 0);
+    opacity: 0;
+  }
+}
+.dust-p {
+  position: absolute;
+  border-radius: 9999px;
+  background: rgba(238, 214, 170, 0.85);
+  animation: dust-drift var(--dust-d, 14s) linear infinite;
+  animation-delay: var(--dust-delay, 0s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dust-p {
+    display: none;
+  }
+}
+
+/* ---------- scroll indicator ---------- */
+
+@keyframes sink {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(7px);
+    opacity: 1;
+  }
+}
+.sink {
+  animation: sink 2.6s var(--ease-settle) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sink {
+    animation: none;
+  }
+}
+
+/* ---------- faint desert light (mystery) ---------- */
+
+@keyframes faint-light {
+  0%,
+  100% {
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+.faint-light {
+  animation: faint-light 11s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .faint-light {
+    animation: none;
+    opacity: 0.2;
+  }
+}
+
+/* ---------- before/after slider (CSS-var driven) ---------- */
+
+.ba-after {
+  clip-path: inset(0 0 0 var(--ba, 42%));
+}
+.ba-divider {
+  left: var(--ba, 42%);
+}
+#ba-range:focus-visible ~ .ba-divider .ba-handle {
+  outline: 2px solid theme("colors.barley.400");
+  outline-offset: 2px;
+}
+
+/* ---------- ziggurat states ---------- */
+
+.zig-step .step-face {
+  fill: #2b1f16;
+  transition: fill 0.4s var(--ease-settle);
+}
+.zig-step.is-lit .step-face {
+  fill: url(#zigLit);
+}
+.zig-step .shrine-door {
+  fill: #141311;
+  transition: fill 0.4s var(--ease-settle);
+}
+.zig-step.is-lit .shrine-door {
+  fill: #354f8c;
+}
+
+.zig-chip {
+  @apply text-sand-300/35 transition-colors duration-300;
+}
+.zig-chip.is-lit {
+  @apply border-copper-500/50 bg-brick-900/70 text-barley-400;
+}
+
+/* ---------- the spine (compact zigzag layout) ---------- */
+
+.spine-block {
+  position: relative;
+  border: 1px solid rgba(210, 154, 54, 0.18);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(35, 26, 20, 0.5), rgba(16, 12, 9, 0.28));
+  box-shadow:
+    inset 0 0 0 1px rgba(210, 154, 54, 0.04),
+    0 24px 48px -32px rgba(0, 0, 0, 0.85);
+  padding: 1.5rem 1.6rem 1.7rem;
+}
+.spine-dot {
+  display: none;
+}
+@media (min-width: 768px) {
+  .spine-dot {
+    display: block;
+    position: absolute;
+    top: 0.45rem;
+    width: 13px;
+    height: 13px;
+    transform: rotate(45deg);
+    border-radius: 3px;
+    background: #96582f;
+    border: 2px solid #b07d24;
+    box-shadow: 0 0 0 4px rgba(23, 18, 16, 1);
+  }
+  .dot-r {
+    right: calc(-2.75rem - 6.5px);
+  }
+  .dot-l {
+    left: calc(-2.75rem - 6.5px);
+  }
+}
+@media (max-width: 767.98px) {
+  .spine-block::before {
+    content: "";
+    position: absolute;
+    left: -2.15rem;
+    top: 0.5rem;
+    width: 11px;
+    height: 11px;
+    transform: rotate(45deg);
+    border-radius: 2.5px;
+    background: #96582f;
+    border: 2px solid #b07d24;
+  }
+}
+
+/* ---------- complaint offenses ---------- */
+
+.offense-btn {
+  @apply flex w-full items-baseline gap-3 rounded-md px-3 py-2 text-left font-display text-xl transition-colors md:text-2xl;
+  @apply text-sand-300/60 hover:text-sand-200;
+}
+.offense-btn.is-active {
+  @apply bg-brick-900/70 text-barley-400;
+}
+
+/* ---------- blog prose ---------- */
+
+.prose-sumer {
+  @apply text-sand-300;
+}
+.prose-sumer h2 {
+  @apply mb-4 mt-12 font-display text-2xl text-sand-200;
+}
+.prose-sumer h3 {
+  @apply mb-3 mt-8 font-display text-xl text-sand-200;
+}
+.prose-sumer p {
+  @apply mb-5 max-w-measure leading-relaxed;
+}
+.prose-sumer a {
+  @apply text-barley-400 underline decoration-barley-600 underline-offset-4 hover:text-barley-500;
+}
+.prose-sumer strong {
+  @apply text-sand-200;
+}
+.prose-sumer em {
+  @apply text-sand-200;
+}
+.prose-sumer ul,
+.prose-sumer ol {
+  @apply mb-5 ml-5 max-w-measure list-disc space-y-1;
+}
+.prose-sumer blockquote {
+  @apply my-6 max-w-measure border-l-2 border-copper-500 pl-4 italic text-sand-200;
+}
+.prose-sumer hr {
+  @apply my-10 border-brick-700;
+}
+.prose-sumer code {
+  @apply rounded bg-brick-900 px-1.5 py-0.5 text-[0.9em] text-barley-400;
+}
+
+/* ============================================================
+   MUSEUM CATALOG — editorial chrome (homepage redesign)
+   Numbered entries, hairline gold rules, plate frames, captions.
+   ============================================================ */
+
+.sec-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.sec-kicker.is-center {
+  justify-content: center;
+}
+.sec-no {
+  font-family: theme("fontFamily.display");
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: theme("colors.barley.500");
+}
+.sec-no-sm {
+  font-family: theme("fontFamily.display");
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: theme("colors.copper.400");
+  white-space: nowrap;
+}
+.sec-rule {
+  height: 1px;
+  width: 3rem;
+  flex: none;
+  background: linear-gradient(90deg, rgba(210, 154, 54, 0.9), rgba(210, 154, 54, 0));
+}
+.sec-kicker.is-center .sec-rule {
+  width: 2.25rem;
+}
+.sec-rule.rule-l {
+  transform: scaleX(-1);
+}
+.sec-label {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(233, 219, 188, 0.5);
+}
+
+/* the museum plate: outer gold hairline, inner mat line, corner ticks */
+.plate {
+  position: relative;
+  border: 1px solid rgba(210, 154, 54, 0.26);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(35, 26, 20, 0.55), rgba(16, 12, 9, 0.35));
+  box-shadow: 0 30px 60px -40px rgba(0, 0, 0, 0.9);
+}
+.plate::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  border: 1px solid rgba(210, 154, 54, 0.11);
+  border-radius: 2px;
+}
+.plate::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    linear-gradient(#d29a36, #d29a36) top left / 14px 1.5px,
+    linear-gradient(#d29a36, #d29a36) top left / 1.5px 14px,
+    linear-gradient(#d29a36, #d29a36) top right / 14px 1.5px,
+    linear-gradient(#d29a36, #d29a36) top right / 1.5px 14px,
+    linear-gradient(#d29a36, #d29a36) bottom left / 14px 1.5px,
+    linear-gradient(#d29a36, #d29a36) bottom left / 1.5px 14px,
+    linear-gradient(#d29a36, #d29a36) bottom right / 14px 1.5px,
+    linear-gradient(#d29a36, #d29a36) bottom right / 1.5px 14px;
+  background-repeat: no-repeat;
+}
+.plate-cap {
+  display: block;
+  margin-top: 1.15rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(210, 154, 54, 0.16);
+  text-align: center;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(233, 219, 188, 0.42);
+}
+
+/* catalog rail (left edge, xl+) */
+.cat-rail a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.rail-no {
+  font-family: theme("fontFamily.display");
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(233, 219, 188, 0.28);
+  transition: color 0.25s;
+}
+.rail-tick {
+  height: 1px;
+  width: 0.9rem;
+  background: rgba(233, 219, 188, 0.15);
+  transition:
+    width 0.25s,
+    background 0.25s;
+}
+.rail-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(233, 219, 188, 0.55);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity 0.25s,
+    transform 0.25s;
+  white-space: nowrap;
+}
+.cat-rail a.is-live .rail-no {
+  color: #d29a36;
+}
+.cat-rail a.is-live .rail-tick {
+  width: 1.6rem;
+  background: rgba(210, 154, 54, 0.8);
+}
+.cat-rail a:hover .rail-label,
+.cat-rail a.is-live .rail-label {
+  opacity: 1;
+  transform: none;
+}

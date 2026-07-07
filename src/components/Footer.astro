@@ -1,0 +1,40 @@
+---
+import { site } from "../lib/site";
+import Cuneiform from "./Cuneiform.astro";
+---
+
+<footer class="border-t border-brick-800 bg-[#100c09]">
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-14 md:flex-row md:items-center md:justify-between"
+  >
+    <div>
+      <p class="font-display text-sm font-semibold uppercase tracking-[0.18em] text-sand-200">
+        Sumerian Merchant
+      </p>
+      <p class="mt-2 text-sm text-sand-300/60">
+        © {site.copyrightYear} {site.studio}. All records kept in clay.
+      </p>
+    </div>
+
+    <Cuneiform marks={5} class="hidden h-3 text-brick-700 md:block" />
+
+    <nav aria-label="Footer" class="flex flex-wrap gap-x-7 gap-y-3 text-sm">
+      <a
+        href={site.steamUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-sand-300/80 hover:text-barley-400">Steam</a
+      >
+      <a
+        href={site.discordUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-sand-300/80 hover:text-barley-400">Discord</a
+      >
+      <a href="/press" class="text-sand-300/80 hover:text-barley-400">Press Kit</a>
+      <a href={`mailto:${site.pressEmail}`} class="text-sand-300/80 hover:text-barley-400"
+        >Contact</a
+      >
+    </nav>
+  </div>
+</footer>

@@ -1,0 +1,111 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import MediaPlaceholder from "../components/MediaPlaceholder.astro";
+import { site } from "../lib/site";
+
+const FACTS: Array<[string, string]> = [
+  ["Developer", site.studio],
+  ["Engine", "Unity"],
+  ["Platforms", "PC (Steam) — Windows"],
+  ["Demo", "Steam Next Fest · October 2026"],
+  ["Early Access", "TBA"],
+  ["Price", "TBA"],
+  ["Genre", "First-person merchant sim · shop management · historical · light narrative"],
+  ["Setting", "Southern Mesopotamia, c. 2000 BCE"],
+  ["Players", "Single-player"],
+];
+---
+
+<Base title="Press Kit" description="Factsheet, descriptions, and assets for Sumerian Merchant.">
+  <PageHeader eyebrow="Press kit" title="Everything you need, pressed in one place.">
+    <p slot="lead">
+      Short on time? The one-liner: a first-person merchant sim set in Mesopotamia, 2000 BCE, where
+      money is barley you weigh by hand and progression is what the city thinks of you.
+    </p>
+  </PageHeader>
+
+  <div class="mx-auto max-w-6xl px-6 py-20">
+    <div class="grid gap-14 lg:grid-cols-[1fr_1.4fr]">
+      {/* factsheet */}
+      <div>
+        <h2 class="font-display text-2xl text-sand-200">Factsheet</h2>
+        <dl class="mt-7 divide-y divide-brick-900 border-y border-brick-900">
+          {
+            FACTS.map(([k, v]) => (
+              <div class="grid grid-cols-[110px_1fr] gap-4 py-3.5">
+                <dt class="text-xs uppercase tracking-[0.18em] text-sand-300/45">{k}</dt>
+                <dd class="text-sm leading-relaxed text-sand-300/90">{v}</dd>
+              </div>
+            ))
+          }
+          <div class="grid grid-cols-[110px_1fr] gap-4 py-3.5">
+            <dt class="text-xs uppercase tracking-[0.18em] text-sand-300/45">Contact</dt>
+            <dd class="text-sm leading-relaxed text-sand-300/90">
+              <a class="text-barley-400 underline underline-offset-4" href={`mailto:${site.pressEmail}`}>
+                {site.pressEmail}
+              </a>
+            </dd>
+          </div>
+        </dl>
+        <p class="mt-6 text-sm leading-relaxed text-sand-300/60">
+          Monetization: you are free to publish and monetize videos of Sumerian Merchant. For
+          preview keys, interviews, or anything else, write to us.
+        </p>
+      </div>
+
+      {/* descriptions */}
+      <div>
+        <h2 class="font-display text-2xl text-sand-200">Description</h2>
+        <div class="mt-7 max-w-[62ch] space-y-5 leading-relaxed text-sand-300/85">
+          <p>
+            Sumerian Merchant is a first-person merchant simulator set in Mesopotamia around 2000
+            BCE. As a state-appointed trader, you run a shop at the heart of one of the
+            world&rsquo;s first cities: order goods at state prices, stock your shelves, and serve
+            a street of customers who each want something different from you.
+          </p>
+          <p>
+            Its signature mechanic is the balance scale. There are no coins and no floating numbers
+            — barley is money, and every payment is weighed by hand against stone weights. Silver,
+            for the deals that matter, is weighed too.
+          </p>
+          <p>
+            Around the scale sits a society. A pawn counter for citizens in hard times. An official
+            complaint system — press your case into clay and accept the judgment, knowing the same
+            law can be turned on you. A 28-day year of seasons, festivals, droughts, caravans, and
+            war. Seven social classes between you and the royal house, unlocked not by experience
+            points but by influence.
+          </p>
+          <p>And beneath the routine, something else. The city keeps records. Not all of them should exist.</p>
+        </div>
+
+        <h3 class="mt-12 font-display text-xl text-sand-200">Key features</h3>
+        <ul class="mt-5 max-w-[62ch] list-disc space-y-2 pl-5 leading-relaxed text-sand-300/80">
+          <li>Weigh every payment on a physical balance scale — barley in, trust out.</li>
+          <li>Rise through seven social classes; influence, not XP, is progression.</li>
+          <li>File official complaints on clay tablets — and answer the ones filed against you.</li>
+          <li>Run a pawn counter with state-set interest and human stakes.</li>
+          <li>Trade through a living calendar: drought, harvest, festival, disease, caravans, war.</li>
+          <li>Inspect goods for quality and forgery before the inspector inspects you.</li>
+          <li>Collect real historical artifacts and complete regional collections.</li>
+          <li>Meet Ea-nāṣir, history&rsquo;s most complained-about copper merchant.</li>
+        </ul>
+      </div>
+    </div>
+
+    {/* assets */}
+    <div class="mt-24">
+      <h2 class="font-display text-2xl text-sand-200">Assets</h2>
+      <p class="mt-4 max-w-[62ch] text-sm leading-relaxed text-sand-300/60">
+        Logo pack, key art, and screenshots will be downloadable here as a single archive
+        (press-kit.zip in /public/assets). Until captures exist, the frames below reserve the shot
+        list.
+      </p>
+      <div class="mt-8 grid gap-6 sm:grid-cols-3">
+        <MediaPlaceholder file="press-logo.png" label="Logo · wordmark pack" aspect="aspect-[16/10]" />
+        <MediaPlaceholder file="hero-shop-dawn.jpg" label="Key art · shop at dawn" aspect="aspect-[16/10]" />
+        <MediaPlaceholder file="gallery-02.jpg" label="Screenshot · the scale" aspect="aspect-[16/10]" />
+      </div>
+    </div>
+  </div>
+</Base>

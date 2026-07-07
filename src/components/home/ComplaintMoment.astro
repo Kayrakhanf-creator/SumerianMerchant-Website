@@ -1,0 +1,208 @@
+---
+import SectionHead from "../SectionHead.astro";
+
+/**
+ * MOMENT 4 — THE COMPLAINT TABLET. Wet clay, a stylus, and your seal.
+ * Pick the offense: the scribe presses it into the tablet in cuneiform
+ * (decorative wedges — the readable copy sits beneath). Then press YOUR
+ * seal into the clay and take the judgment: VALID or PENALTY.
+ */
+const OFFENSES = [
+  ["False copper", "Case 112 — ingots sold as fine copper. The assay failed."],
+  ["Broken contracts", "Case 87 — grain promised at harvest. Never delivered."],
+  ["Stolen goods", "Case 203 — a missing seal, found on a market counter."],
+  ["Bad faith deals", "Case 55 — the weights were light. The buyer noticed."],
+] as const;
+
+// wedge rows: [glyphs per row]
+const ROWS = [9, 7, 8, 5];
+---
+
+<section id="law" class="relative bg-[#100c09] py-24 md:py-36">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="grid items-center gap-12 md:grid-cols-[5fr_7fr]">
+      <div>
+        <SectionHead no="05" label="Law & consequence" title="Trade has consequences." />
+        <ul class="mt-8 space-y-1" aria-label="Grounds for an official complaint">
+          {
+            OFFENSES.map(([name, detail], i) => (
+              <li>
+                <button
+                  type="button"
+                  class={`offense-btn ${i === 0 ? "is-active" : ""}`}
+                  data-offense={detail}
+                  aria-pressed={i === 0 ? "true" : "false"}
+                >
+                  <span aria-hidden="true" class="text-sm text-copper-500">𒐊</span>
+                  {name}.
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-8 max-w-[40ch] font-display text-lg leading-relaxed text-sand-200">
+          Write it in clay. Press your seal. Take the judgment.
+        </p>
+        <p class="mt-3 max-w-[44ch] text-sm leading-relaxed text-sand-300/60">
+          The same tablets can be raised against you — and the inspector comes at dusk.
+        </p>
+      </div>
+
+      <div>
+        <div id="law-tablet" class="tablet striated relative px-7 py-8 md:px-10 md:py-10">
+          <p class="impressed flex items-center justify-between text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-[#4a2c15]">
+            <span>Official record</span>
+            <span>Ur · District III</span>
+          </p>
+
+          {/* the complaint, written in wedges */}
+          <div id="law-script" class="mt-6 space-y-3" aria-hidden="true">
+            {
+              ROWS.map((n) => (
+                <div class="flex flex-wrap gap-x-2.5 gap-y-1">
+                  {Array.from({ length: n }).map((_, c) => (
+                    <svg viewBox="0 0 14 14" class="law-glyph h-3.5 w-3.5 fill-[#4a2c15]/85">
+                      {c % 3 === 0 ? (
+                        <path d="M1 2 L11 7 L1 12 Z M12 3 v8 l2 -4 Z" />
+                      ) : c % 3 === 1 ? (
+                        <path d="M2 1 L7 11 L12 1 L9 1 L7 6 L5 1 Z" />
+                      ) : (
+                        <path d="M1 6 h10 v2.5 h-10 Z M6 1 l3 4 h-6 Z" />
+                      )}
+                    </svg>
+                  ))}
+                </div>
+              ))
+            }
+          </div>
+
+          {/* scribe's readable copy */}
+          <div class="mt-5 min-h-[48px] border-t border-[#4a2c15]/25 pt-3" aria-live="polite">
+            <p class="text-[0.6rem] uppercase tracking-[0.25em] text-[#4a2c15]/70">Scribe's copy</p>
+            <p id="law-case" class="impressed mt-1 font-display text-lg leading-snug text-[#33200f]">
+              {OFFENSES[0][1]}
+            </p>
+          </div>
+
+          {/* the seal corner: impression left in the clay */}
+          <div class="mt-6 flex items-end justify-between">
+            <p class="impressed text-xs uppercase tracking-[0.25em] text-[#4a2c15]/80">
+              Witness · scribe · guardian
+            </p>
+            <div class="relative h-20 w-24">
+              {/* your seal, hovering — pressed by the button */}
+              <div
+                id="law-sealhand"
+                aria-hidden="true"
+                class="absolute left-1/2 top-0 h-16 w-14 -translate-x-1/2 opacity-0"
+              >
+                <div class="mx-auto h-6 w-5 rounded-t-full border border-[#5c3f1e]" style="background: linear-gradient(180deg,#b08749,#966d36);"></div>
+                <div class="mx-auto h-9 w-12 rounded-md border-2 border-[#5c3f1e]" style="background: linear-gradient(160deg,#b08749,#7c5628 60%,#5c3f1e);"></div>
+              </div>
+              {/* the impression in the clay */}
+              <div
+                id="law-impression"
+                class="absolute bottom-0 left-1/2 flex h-14 w-[4.5rem] -translate-x-1/2 rotate-[-3deg] items-center justify-center rounded-md"
+                style="box-shadow: inset 0 3px 7px rgba(43,22,8,0.65), inset 0 -1px 0 rgba(255,236,210,0.25); background: rgba(74,44,21,0.12);"
+              >
+                <span id="law-stamp" class="font-display text-sm font-bold uppercase tracking-[0.18em] text-[#5c1d10]">Valid</span>
+              </div>
+            </div>
+          </div>
+
+          <div aria-hidden="true" class="absolute -top-1 right-10 h-4 w-10 rounded-b-full bg-[#100c09]/25 blur-[1px]"></div>
+        </div>
+
+        <div class="mt-5 flex items-center justify-between">
+          <button
+            type="button"
+            id="law-press"
+            class="rounded-xl border border-barley-600 bg-barley-500 px-5 py-3 font-display text-base font-semibold text-bitumen shadow-[0_5px_0_-2px_#7c5628] transition-transform active:translate-y-0.5"
+          >
+            Press your seal
+          </button>
+          <p class="text-xs text-sand-300/45">The judgment is not always yours.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.getElementById("law");
+  if (section) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const caseText = document.getElementById("law-case");
+    const glyphs = section.querySelectorAll(".law-glyph");
+    const buttons = Array.from(section.querySelectorAll<HTMLButtonElement>(".offense-btn"));
+
+    // choosing an offense re-writes the tablet in wedges
+    const activate = (btn: HTMLButtonElement) => {
+      for (const b of buttons) {
+        b.classList.toggle("is-active", b === btn);
+        b.setAttribute("aria-pressed", String(b === btn));
+      }
+      if (caseText) caseText.textContent = btn.dataset.offense ?? "";
+      if (!reduce)
+        gsap.fromTo(glyphs, { opacity: 0 }, { opacity: 1, duration: 0.12, stagger: 0.018, overwrite: true });
+    };
+    for (const b of buttons) {
+      b.addEventListener("mouseenter", () => activate(b));
+      b.addEventListener("focus", () => activate(b));
+      b.addEventListener("click", () => activate(b));
+    }
+
+    // pressing YOUR seal into the clay
+    const hand = document.getElementById("law-sealhand");
+    const impression = document.getElementById("law-impression");
+    const stamp = document.getElementById("law-stamp");
+    let verdictValid = true;
+    let busy = false;
+
+    const press = (flip: boolean) => {
+      if (!hand || !impression || !stamp || busy) return;
+      if (flip) verdictValid = !verdictValid;
+      const word = verdictValid ? "Valid" : "Penalty";
+      const color = verdictValid ? "#5c1d10" : "#7a1a10";
+      if (reduce) {
+        stamp.textContent = word;
+        stamp.style.color = color;
+        return;
+      }
+      busy = true;
+      gsap
+        .timeline({ onComplete: () => (busy = false) })
+        .set(impression, { opacity: 0.25 })
+        .set(stamp, { opacity: 0 })
+        .fromTo(hand, { y: -26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.22, ease: "power2.in" })
+        .to(hand, { y: 8, scaleY: 0.94, duration: 0.09, ease: "power4.in" })
+        .to("#law-tablet", { y: 2, duration: 0.06, yoyo: true, repeat: 1, ease: "power1.inOut" }, "<")
+        .call(() => {
+          stamp.textContent = word;
+          stamp.style.color = color;
+        })
+        .to(impression, { opacity: 1, duration: 0.15 })
+        .to(stamp, { opacity: 1, duration: 0.12 }, "<")
+        .to(hand, { y: -30, opacity: 0, duration: 0.3, ease: "power2.out" }, "+=0.12");
+    };
+
+    document.getElementById("law-press")?.addEventListener("click", () => press(true));
+
+    if (!reduce) {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 78%",
+        once: true,
+        onEnter: () => {
+          gsap.from("#law-tablet", { y: 50, rotation: -1.5, opacity: 0, duration: 0.7, ease: "power3.out" });
+          gsap.fromTo(glyphs, { opacity: 0 }, { opacity: 1, duration: 0.12, stagger: 0.02, delay: 0.4 });
+          gsap.delayedCall(1.2, () => press(false));
+        },
+      });
+    }
+  }
+</script>

@@ -1,0 +1,144 @@
+---
+import WishlistButton from "../WishlistButton.astro";
+import Dust from "../Dust.astro";
+
+/**
+ * MOMENT 1 — ARRIVAL AT DAWN.
+ * Real key art (public/assets/hero-shop-dawn.jpg): luminous dawn over the
+ * city, ziggurat catching first light, the merchant's scale in the
+ * foreground. Gradient veils keep the headline readable; a slow parallax
+ * drift keeps it alive. Swap the img for hero-shop-dawn.mp4 later if a
+ * capture loop lands.
+ */
+---
+
+<section
+  id="hero"
+  aria-label="Sumerian Merchant — arrival at dawn"
+  class="relative flex min-h-[100svh] items-center overflow-hidden"
+>
+  {/* the painting */}
+  <div data-hero-img aria-hidden="true" class="absolute inset-0 scale-[1.06]">
+    <img
+      src="/assets/hero-shop-dawn.jpg"
+      alt=""
+      class="h-full w-full object-cover object-[50%_38%]"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </div>
+
+  {/* readability veils — dark up top for nav+title, fade to bitumen below */}
+  <div aria-hidden="true" class="absolute inset-0">
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(to bottom, rgba(13,10,8,0.66) 0%, rgba(13,10,8,0.34) 26%, rgba(13,10,8,0.10) 48%, rgba(13,10,8,0) 62%);"
+    >
+    </div>
+    <div
+      class="absolute inset-0"
+      style="background: radial-gradient(120% 70% at 50% 30%, rgba(13,10,8,0.22), transparent 60%);"
+    >
+    </div>
+    <div class="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-b from-transparent to-bitumen"></div>
+  </div>
+
+  <Dust count={16} />
+
+  {/* content */}
+  <div data-hero-content class="relative z-10 mx-auto w-full max-w-6xl px-6 pb-72 pt-16 text-center md:pb-96">
+    <p class="eyebrow drop-shadow-[0_1px_4px_rgba(13,10,8,0.9)]">Mesopotamia · the first age of trade</p>
+    <h1
+      class="mx-auto mt-5 max-w-[12ch] font-display text-5xl font-semibold leading-[1.02] text-dust [text-wrap:balance] md:text-7xl lg:text-8xl"
+      style="text-shadow: 0 1px 0 rgba(255,236,210,0.16), 0 4px 18px rgba(13,10,8,0.75), 0 16px 48px rgba(13,10,8,0.5);"
+    >
+      Sumerian Merchant
+    </h1>
+    <p
+      class="mx-auto mt-6 max-w-[30ch] font-display text-xl text-dust md:text-2xl"
+      style="text-shadow: 0 2px 12px rgba(13,10,8,0.85);"
+    >
+      Become the most influential merchant in history.
+    </p>
+    <div class="mt-10 flex flex-col items-center gap-3">
+      <WishlistButton size="lg" />
+      <p class="text-xs uppercase tracking-[0.28em] text-dust/80" style="text-shadow: 0 1px 6px rgba(13,10,8,0.9);">
+        Free demo · Steam Next Fest · October 2026
+      </p>
+    </div>
+  </div>
+
+  <a
+    href="#systems"
+    aria-label="Scroll down"
+    class="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-sand-200/80 hover:text-dust"
+    style="text-shadow: 0 1px 6px rgba(13,10,8,0.9);"
+  >
+    <span class="text-[0.65rem] uppercase tracking-[0.3em]">Open the shop</span>
+    <svg aria-hidden="true" viewBox="0 0 16 10" class="sink h-2.5 w-4 fill-none stroke-current">
+      <path d="M1 1 L8 8 L15 1" stroke-width="1.5" stroke-linecap="round"></path>
+    </svg>
+  </a>
+
+  <div
+    aria-hidden="true"
+    class="absolute bottom-6 left-6 z-10 hidden items-center gap-3 md:flex"
+    style="text-shadow: 0 1px 6px rgba(13,10,8,0.9);"
+  >
+    <span class="sec-no">01</span>
+    <span class="sec-rule"></span>
+    <span class="sec-label">The shop at dawn</span>
+  </div>
+
+  <div class="absolute bottom-6 right-6 z-10">
+    <audio id="ambience-audio" src="/assets/ambience-market.mp3" loop preload="none"></audio>
+    <button
+      type="button"
+      id="ambience-btn"
+      aria-pressed="false"
+      title="Toggle market ambience"
+      class="flex items-center gap-2 rounded-full border border-sand-300/25 bg-black/30 px-3.5 py-2 text-xs text-sand-200/90 backdrop-blur-sm transition-colors hover:border-sand-300/50 hover:text-dust"
+    >
+      <span id="ambience-dot" aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-sand-300/40"></span>
+      <span id="ambience-label">Ambience</span>
+    </button>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const hero = document.getElementById("hero");
+  if (hero && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const st = { trigger: hero, start: "top top", end: "bottom top", scrub: true } as const;
+    gsap.to("[data-hero-img]", { yPercent: 9, ease: "none", scrollTrigger: st });
+    gsap.to("[data-hero-content]", { yPercent: -10, autoAlpha: 0.35, ease: "none", scrollTrigger: st });
+  }
+
+  const audio = document.getElementById("ambience-audio") as HTMLAudioElement | null;
+  const btn = document.getElementById("ambience-btn");
+  const dot = document.getElementById("ambience-dot");
+  const label = document.getElementById("ambience-label");
+  btn?.addEventListener("click", async () => {
+    if (!audio || !dot || !label) return;
+    const on = btn.getAttribute("aria-pressed") === "true";
+    if (on) {
+      audio.pause();
+      btn.setAttribute("aria-pressed", "false");
+      dot.className = "h-1.5 w-1.5 rounded-full bg-sand-300/40";
+      label.textContent = "Ambience";
+      return;
+    }
+    try {
+      audio.volume = 0.4;
+      await audio.play();
+      btn.setAttribute("aria-pressed", "true");
+      dot.className = "h-1.5 w-1.5 rounded-full bg-barley-400";
+      label.textContent = "Ambience on";
+    } catch {
+      label.textContent = "Ambience unavailable";
+    }
+  });
+</script>

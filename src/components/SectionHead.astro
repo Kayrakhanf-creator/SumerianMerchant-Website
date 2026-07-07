@@ -1,0 +1,34 @@
+---
+/**
+ * MUSEUM CATALOG HEADER — every section opens like a catalog entry:
+ * number · gold rule · small-caps label, then the display title.
+ */
+interface Props {
+  no: string;
+  label: string;
+  title: string;
+  align?: "left" | "center";
+  size?: "md" | "lg";
+  lede?: string;
+}
+const { no, label, title, align = "left", size = "md", lede } = Astro.props;
+const center = align === "center";
+---
+
+<header class={center ? "text-center" : ""}>
+  <p class={`sec-kicker ${center ? "is-center" : ""}`}>
+    {center && <span aria-hidden="true" class="sec-rule rule-l"></span>}
+    <span class="sec-no">{no}</span>
+    {!center && <span aria-hidden="true" class="sec-rule"></span>}
+    <span class="sec-label">{label}</span>
+    {center && <span aria-hidden="true" class="sec-rule"></span>}
+  </p>
+  <h2
+    class={`mt-5 font-display text-sand-200 [text-wrap:balance] ${
+      size === "lg" ? "text-4xl leading-[1.03] md:text-6xl" : "text-3xl leading-[1.08] md:text-5xl"
+    } ${center ? "mx-auto max-w-[24ch]" : "max-w-[22ch]"}`}
+  >
+    {title}
+  </h2>
+  {lede && <p class={`mt-6 max-w-[54ch] text-lg leading-relaxed text-sand-300/90 ${center ? "mx-auto" : ""}`}>{lede}</p>}
+</header>

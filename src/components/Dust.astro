@@ -1,0 +1,33 @@
+---
+/**
+ * Drifting dust motes — generated at BUILD time (zero client JS).
+ * Pure CSS animation; fully hidden under prefers-reduced-motion.
+ */
+interface Props {
+  count?: number;
+  class?: string;
+}
+const { count = 22, class: cls = "" } = Astro.props;
+
+const particles = Array.from({ length: count }).map(() => ({
+  left: `${(Math.random() * 100).toFixed(2)}%`,
+  top: `${(20 + Math.random() * 75).toFixed(2)}%`,
+  size: (1 + Math.random() * 2.2).toFixed(2),
+  o: (0.15 + Math.random() * 0.4).toFixed(2),
+  x: (-30 + Math.random() * 60).toFixed(1),
+  y: -(50 + Math.random() * 90).toFixed(1),
+  d: (10 + Math.random() * 14).toFixed(1),
+  delay: -(Math.random() * 20).toFixed(1),
+}));
+---
+
+<div aria-hidden="true" class={`pointer-events-none absolute inset-0 overflow-hidden ${cls}`}>
+  {
+    particles.map((p) => (
+      <span
+        class="dust-p"
+        style={`left:${p.left};top:${p.top};width:${p.size}px;height:${p.size}px;--dust-o:${p.o};--dust-x:${p.x}px;--dust-y:${p.y}px;--dust-d:${p.d}s;--dust-delay:${p.delay}s`}
+      />
+    ))
+  }
+</div>

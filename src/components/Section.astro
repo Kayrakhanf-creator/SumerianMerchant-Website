@@ -1,0 +1,53 @@
+---
+import Reveal from "./Reveal.astro";
+
+type Tone = "bitumen" | "brick" | "black";
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  tone?: Tone;
+  class?: string;
+  wide?: boolean;
+}
+
+const { id, eyebrow, title, tone = "bitumen", class: cls = "", wide = false } = Astro.props;
+
+const tones: Record<Tone, string> = {
+  bitumen: "",
+  brick: "bg-brick-950",
+  black: "bg-[#100c09]",
+};
+---
+
+<section id={id} class={`relative py-24 md:py-36 ${tones[tone]} ${cls}`}>
+  <div class={`mx-auto px-6 ${wide ? "max-w-7xl" : "max-w-6xl"}`}>
+    {
+      eyebrow ? (
+        <Reveal>
+          <p class="eyebrow">{eyebrow}</p>
+        </Reveal>
+      ) : null
+    }
+    {
+      title ? (
+        <Reveal delay={70}>
+          <h2 class="mt-4 max-w-[22ch] font-display text-3xl leading-[1.08] text-sand-200 [text-wrap:balance] md:text-5xl">
+            {title}
+          </h2>
+        </Reveal>
+      ) : null
+    }
+    {
+      Astro.slots.has("lead") ? (
+        <Reveal delay={140}>
+          <div class="mt-6 max-w-[54ch] text-lg leading-relaxed text-sand-300/90">
+            <slot name="lead" />
+          </div>
+        </Reveal>
+      ) : null
+    }
+    <slot />
+  </div>
+</section>

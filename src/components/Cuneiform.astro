@@ -1,0 +1,38 @@
+---
+/**
+ * Decorative cuneiform-like wedge marks. DECORATIVE ONLY — never used
+ * for readable text (aria-hidden). Used sparingly.
+ */
+interface Props {
+  marks?: number;
+  class?: string;
+}
+const { marks = 4, class: cls = "" } = Astro.props;
+
+const glyphs = [
+  "M0 3 L10 0.4 L10 5.6 Z", // horizontal wedge
+  "M3 0 L5.6 10 L0.4 10 Z", // vertical wedge
+  "M0 0 L9 2.5 L2.5 9 Z", // hooked wedge
+];
+const items = Array.from({ length: marks }).map((_, i) => ({
+  d: glyphs[i % glyphs.length],
+  tx: i * 16 + (i % 2 ? 2 : 0),
+  ty: i % 2 ? 1 : 0,
+}));
+---
+
+<svg
+  aria-hidden="true"
+  class={cls}
+  viewBox={`0 0 ${marks * 16} 12`}
+  fill="currentColor"
+  preserveAspectRatio="xMidYMid meet"
+>
+  {
+    items.map((g) => (
+      <g transform={`translate(${g.tx}, ${g.ty})`}>
+        <path d={g.d} />
+      </g>
+    ))
+  }
+</svg>

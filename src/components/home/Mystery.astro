@@ -1,0 +1,102 @@
+---
+import Reveal from "../Reveal.astro";
+
+/**
+ * The mystery teaser. Restrained, historical, eerie.
+ * A normal city at night. One faint light that shouldn't be there.
+ * No aliens. No neon. Mostly darkness and silence.
+ */
+const ROWS: number[] = [5, 4, 5, 3];
+---
+
+<section id="mystery" class="relative overflow-hidden bg-[#0b0908] py-28 md:py-44">
+  <div aria-hidden="true" class="absolute inset-0">
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(to bottom, #0a0a10 0%, #0d0b0d 55%, #120d09 100%);"
+    >
+    </div>
+    {/* thin crescent moon */}
+    <svg class="absolute right-[14%] top-[16%] h-10 w-10 opacity-50" viewBox="0 0 40 40">
+      <path d="M28 6 a16 16 0 1 0 0 28 a13 13 0 1 1 0 -28 Z" fill="#d9c7a2" opacity="0.7"></path>
+    </svg>
+    {/* the light that shouldn't be there */}
+    <div
+      class="faint-light absolute left-[22%] top-[30%] h-40 w-[3px] rounded-full"
+      style="background: linear-gradient(to bottom, transparent, rgba(233,219,188,0.5), transparent); filter: blur(2px);"
+    >
+    </div>
+    <div
+      class="faint-light absolute left-[calc(22%-30px)] top-[42%] h-16 w-16 rounded-full"
+      style="background: radial-gradient(circle, rgba(233,219,188,0.12), transparent 70%); animation-delay: -4s;"
+    >
+    </div>
+    {/* sleeping city on the horizon */}
+    <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 140" preserveAspectRatio="xMidYMax slice">
+      <path
+        fill="#080604"
+        d="M0 140 V96 h90 v-14 h70 v14 h60 v-26 h80 v26 h100 v-12 h90 v12 h60
+           h40 v-16 h30 v-14 h30 v-16 h36 v16 h30 v14 h30 v16 h40
+           h80 v-22 h74 v22 h90 v-10 h110 v10 h100 v-18 h100 v62 Z"
+      ></path>
+      <rect x="332" y="82" width="5" height="7" fill="#d29a36" opacity="0.55"></rect>
+    </svg>
+  </div>
+
+  <div class="relative mx-auto grid max-w-6xl items-end gap-14 px-6 md:grid-cols-[1.2fr_1fr]">
+    <div>
+      <Reveal>
+        <p class="sec-kicker">
+          <span class="sec-no">09</span>
+          <span aria-hidden="true" class="sec-rule"></span>
+          <span class="sec-label">The mystery</span>
+        </p>
+        <h2 class="mt-5 font-display text-3xl leading-[1.12] text-sand-200 md:text-5xl">
+          The city keeps records.
+        </h2>
+      </Reveal>
+      <Reveal delay={90}>
+        <p class="mt-3 font-display text-xl text-sand-300/70 md:text-2xl">
+          Not all of them should exist.
+        </p>
+      </Reveal>
+      <Reveal delay={180}>
+        <div class="mt-9 max-w-[38ch] space-y-1.5 text-lg leading-relaxed text-sand-300/80">
+          <p>At first, your work is simple.</p>
+          <p>Open the shop. Weigh the barley. Pay the tax.</p>
+          <p class="pt-3 text-sand-200">Then the rumors begin.</p>
+        </div>
+      </Reveal>
+    </div>
+
+    {/* a damaged tablet, one line missing */}
+    <Reveal delay={240}>
+      <div
+        class="tablet-dark striated relative px-7 py-8"
+        style="clip-path: polygon(0 0, 88% 0, 100% 14%, 100% 100%, 6% 100%, 0 92%);"
+      >
+        <p class="text-[0.65rem] uppercase tracking-[0.3em] text-sand-300/40">
+          Recovered record · year unknown
+        </p>
+        <div aria-hidden="true" class="mt-5 space-y-3">
+          {
+            ROWS.map((n, r) => (
+              <div class="flex gap-2.5">
+                {Array.from({ length: n }).map((_, c) => (
+                  <svg viewBox="0 0 10 10" class="h-2.5 w-2.5 fill-sand-300/25">
+                    <path d={c % 2 ? "M1 1 L9 5 L1 9 Z" : "M1 4 h8 v2 h-8 Z"} />
+                  </svg>
+                ))}
+                {r === 2 ? <span class="ml-2 inline-block h-2.5 w-16 self-center rounded-sm bg-black/50" /> : null}
+              </div>
+            ))
+          }
+        </div>
+        <p class="mt-6 text-sm italic leading-relaxed text-sand-300/55">
+          &ldquo;…and payment was asked in gold, though no gold moves in this market. The rest of
+          the line is broken.&rdquo;
+        </p>
+      </div>
+    </Reveal>
+  </div>
+</section>

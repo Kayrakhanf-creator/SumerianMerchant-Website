@@ -1,0 +1,176 @@
+---
+import SectionHead from "../SectionHead.astro";
+
+/**
+ * MOMENT 3 — THE CLIMB. The section pins; as you scroll, YOUR marker
+ * ("You are here") starts on the bottom step and climbs the seven
+ * classes to the summit — you begin at the very bottom, you end at the
+ * very top. Ships fully lit with the marker at the base for no-JS.
+ */
+const RANKS = [
+  ["Peasant", "Peasants bring survival trades."],
+  ["Farmer", "Farmers bring harvest goods."],
+  ["Craftsman", "Craftsmen bring tools and crafted items."],
+  ["Merchant", "Merchants bring risk and opportunity."],
+  ["Priest", "Priests bring influence."],
+  ["Noble", "Nobles demand quality."],
+  ["Royal Family", "Royalty changes your place in history."],
+] as const;
+
+const STEP_H = 40;
+const BASE_Y = 350;
+const steps = RANKS.map((_, i) => {
+  const w = 440 - 56 * i;
+  return { w, x: (560 - w) / 2, y: BASE_Y - STEP_H * (i + 1) };
+});
+// marker's feet, standing on step 0
+const MARK_Y = BASE_Y - STEP_H;
+---
+
+<section id="society" class="relative">
+  <div data-zig-pin class="flex min-h-[100svh] items-center py-24 md:py-0">
+    <div class="mx-auto w-full max-w-6xl px-6">
+      <SectionHead no="04" label="Social progression" title="Rise through society." lede="You start at the very bottom of the stairs. Keep scrolling — influence carries you up, one class at a time." />
+
+      <div class="mt-10 grid items-center gap-12 md:grid-cols-[1.25fr_1fr]">
+        <svg
+          viewBox="0 0 560 384"
+          role="img"
+          aria-label="A seven-stepped ziggurat; your marker climbs from the bottom step to the summit"
+          class="mx-auto w-full max-w-[600px]"
+        >
+          <defs>
+            <linearGradient id="zigLit" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#c98851"></stop>
+              <stop offset="1" stop-color="#96582f"></stop>
+            </linearGradient>
+            <radialGradient id="zigGlow2" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="#e0ab4e" stop-opacity="0.32"></stop>
+              <stop offset="1" stop-color="#e0ab4e" stop-opacity="0"></stop>
+            </radialGradient>
+          </defs>
+
+          <ellipse id="zig-glow" cx="280" cy={BASE_Y - STEP_H / 2} rx="230" ry="120" fill="url(#zigGlow2)" style="transition: cy 0.4s cubic-bezier(0.22,1,0.36,1);"></ellipse>
+          <rect x="0" y={BASE_Y} width="560" height="9" rx="3" fill="#241812"></rect>
+
+          {
+            steps.map((s, i) => (
+              <g class="zig-step is-lit" data-i={i}>
+                <path class="step-top" d={`M${s.x} ${s.y} l14 -9 h${s.w - 28} l14 9 Z`} />
+                <rect class="step-face" x={s.x} y={s.y} width={s.w} height={STEP_H - 4} rx="2.5" stroke="#1c130c" stroke-width="2" />
+                <line x1={s.x + 10} y1={s.y + (STEP_H - 4) / 2} x2={s.x + s.w - 10} y2={s.y + (STEP_H - 4) / 2} stroke="#1c130c" stroke-opacity="0.3" />
+                <rect x={272} y={s.y} width={16} height={STEP_H - 4} fill="#1c130c" opacity="0.4" />
+              </g>
+            ))
+          }
+
+          {/* summit shrine */}
+          <g class="zig-step is-lit" data-i="6">
+            <path class="step-top" d={`M254 ${BASE_Y - STEP_H * 7 - 28} l10 -7 h32 l10 7 Z`} />
+            <rect class="step-face" x="254" y={BASE_Y - STEP_H * 7 - 28} width="52" height="28" rx="2" stroke="#1c130c" stroke-width="2"></rect>
+            <rect class="shrine-door" x="272" y={BASE_Y - STEP_H * 7 - 19} width="16" height="19" rx="1.5"></rect>
+          </g>
+
+          {/* YOU — the marker that climbs as you scroll */}
+          <g id="zig-you" transform={`translate(280 ${MARK_Y})`}>
+            <g transform="scale(1.55)">
+            <ellipse cx="0" cy="0" rx="14" ry="3.5" fill="#000" opacity="0.45"></ellipse>
+            <path d="M-7 0 q0 -16 7 -18 q7 2 7 18 Z" fill="#100a06" stroke="#e0ab4e" stroke-width="1.2"></path>
+            <circle cx="0" cy="-23" r="6" fill="#100a06" stroke="#e0ab4e" stroke-width="1.2"></circle>
+            <g id="zig-you-tag">
+              <rect x="-52" y="-58" width="104" height="20" rx="4" fill="#171210" stroke="#b07d24" stroke-width="1.5"></rect>
+              <path d="M-5 -38 L0 -32 L5 -38 Z" fill="#b07d24"></path>
+              <text x="0" y="-44" text-anchor="middle" font-size="11" letter-spacing="2" fill="#e0ab4e" font-weight="600">YOU ARE HERE</text>
+            </g>
+            </g>
+          </g>
+        </svg>
+
+        <ol class="flex flex-col-reverse gap-1" aria-label="Social classes, lowest to highest">
+          {
+            RANKS.map(([name, note], i) => (
+              <li class="zig-rank is-lit rounded-lg border border-transparent px-4 py-2 transition-colors duration-300" data-i={i}>
+                <p class="rank-name font-display text-lg transition-colors duration-300">{name}</p>
+                <p class="rank-note text-sm text-sand-300/65 transition-opacity duration-300">{note}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .zig-step .step-top {
+    fill: #221913;
+    transition: fill 0.35s var(--ease-settle);
+  }
+  .zig-step.is-lit .step-top {
+    fill: #d99f6a;
+  }
+  .zig-rank .rank-name {
+    color: rgba(217, 199, 162, 0.35);
+  }
+  .zig-rank .rank-note {
+    opacity: 0;
+  }
+  .zig-rank.is-lit {
+    border-color: rgba(184, 112, 61, 0.35);
+    background: rgba(41, 29, 21, 0.6);
+  }
+  .zig-rank.is-lit .rank-name {
+    color: #e0ab4e;
+  }
+  .zig-rank.is-lit .rank-note {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.getElementById("society");
+  const glow = document.getElementById("zig-glow");
+  const you = document.getElementById("zig-you");
+  if (section && glow && you && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const steps = Array.from(section.querySelectorAll<Element>(".zig-step"));
+    const ranks = Array.from(section.querySelectorAll<Element>(".zig-rank"));
+    const BASE_Y = 350, STEP_H = 40;
+
+    // start of the story: only the bottom step is lit, you stand on it
+    for (const s of steps) if (Number((s as HTMLElement).dataset.i) > 0) s.classList.remove("is-lit");
+    for (const r of ranks) if (Number((r as HTMLElement).dataset.i) > 0) r.classList.remove("is-lit");
+    glow.setAttribute("cy", String(BASE_Y - STEP_H * 0.5));
+
+    const st = { p: 0 };
+    let lastN = 0;
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: "+=135%",
+        scrub: 0.4,
+        pin: "[data-zig-pin]",
+        anticipatePin: 1,
+      },
+    }).to(st, {
+      p: 6,
+      ease: "none",
+      duration: 1,
+      onUpdate: () => {
+        // marker climbs continuously
+        gsap.set(you, { y: -STEP_H * st.p });
+        const n = Math.min(6, Math.floor(st.p + 0.001));
+        if (n !== lastN) {
+          lastN = n;
+          for (const s of steps) s.classList.toggle("is-lit", Number((s as HTMLElement).dataset.i) <= n);
+          for (const r of ranks) r.classList.toggle("is-lit", Number((r as HTMLElement).dataset.i) <= n);
+          glow.setAttribute("cy", String(BASE_Y - STEP_H * (n + 0.5)));
+        }
+      },
+    });
+  }
+</script>

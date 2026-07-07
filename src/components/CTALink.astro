@@ -1,0 +1,37 @@
+---
+type Variant = "primary" | "outline" | "quiet";
+type Size = "sm" | "md" | "lg";
+
+interface Props {
+  href: string;
+  variant?: Variant;
+  size?: Size;
+  external?: boolean;
+  class?: string;
+}
+
+const { href, variant = "primary", size = "md", external = false, class: cls = "" } = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center gap-2 font-display font-semibold tracking-wide transition-all duration-200 ease-settle select-none";
+
+const variants: Record<Variant, string> = {
+  primary:
+    "bg-barley-500 text-bitumen border border-barley-600 shadow-[0_6px_0_-2px_#7c5628,0_16px_28px_-14px_rgba(0,0,0,0.9)] hover:bg-barley-400 hover:-translate-y-px active:translate-y-0.5 active:shadow-[0_2px_0_-1px_#7c5628]",
+  outline:
+    "border border-sand-300/25 text-sand-200 hover:border-barley-500/60 hover:text-dust",
+  quiet: "text-sand-300 hover:text-dust underline-offset-4 hover:underline",
+};
+
+const sizes: Record<Size, string> = {
+  sm: "rounded-md px-3.5 py-2 text-sm",
+  md: "rounded-lg px-5 py-2.5 text-[0.95rem]",
+  lg: "rounded-xl px-7 py-3.5 text-lg",
+};
+
+const external_attrs = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
+---
+
+<a href={href} class={`${base} ${variants[variant]} ${sizes[size]} ${cls}`} {...external_attrs}>
+  <slot />
+</a>

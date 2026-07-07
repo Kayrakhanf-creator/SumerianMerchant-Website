@@ -1,0 +1,16 @@
+---
+import CTALink from "./CTALink.astro";
+import { site } from "../lib/site";
+
+interface Props {
+  size?: "sm" | "md" | "lg";
+  class?: string;
+}
+const { size = "md", class: cls = "" } = Astro.props;
+---
+
+{/* The one CTA that matters. Hero, sticky nav, final section — nowhere else. */}
+<CTALink href={site.steamUrl} external size={size} class={cls}>
+  Wishlist on Steam
+  <span aria-hidden="true" class="text-[0.8em] opacity-70">↗</span>
+</CTALink>
